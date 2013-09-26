@@ -61,7 +61,7 @@
             <plugin>
                 <groupId>org.everit.osgi.dev</groupId>
                 <artifactId>eosgi-maven-plugin</artifactId>
-                <version>1.1.0</version>
+                <version>1.1.1</version>
                 <executions>
                     <execution>
                         <id>integration-test</id>
@@ -80,6 +80,10 @@
                                     </systemProperties>
                                 </environment>
                             </environments>
+                             <jacoco>
+                                 <includes>org.everit.token.*</includes>
+                                 <excludes>org.everit.token.itests.*</excludes>
+                             </jacoco> 
                         </configuration>
                     </execution>
                 </executions>
