@@ -31,6 +31,7 @@ import junit.framework.Assert;
 
 import org.everit.token.api.TokenService;
 import org.everit.token.api.dto.Token;
+import org.everit.token.api.exception.NoSuchTokenException;
 
 /**
  * Implementation of {@link TokenServiceTest}.
@@ -94,8 +95,11 @@ public class TokenServiceTestImpl implements TokenServiceTest {
             Assert.assertNotNull(e);
         }
 
-        Token token = tokenService.getToken(testUuuid);
-        Assert.assertTrue(token == null);
+        try {
+            tokenService.getToken(testUuuid);
+        } catch (NoSuchTokenException e) {
+            Assert.assertNotNull(e);
+        }
 
     }
 
@@ -206,12 +210,18 @@ public class TokenServiceTestImpl implements TokenServiceTest {
         Token token = tokenService.getToken(tokenUuids.get(0));
         Assert.assertFalse(token == null);
 
-        String testUuuid = "abcde-fgre-234012";
-        boolean verifyToken = tokenService.verifyToken(testUuuid);
-        Assert.assertFalse(verifyToken);
+        String testUuuid = "test";
+        try {
+            tokenService.verifyToken(testUuuid);
+        } catch (NoSuchTokenException e) {
+            Assert.assertNotNull(e);
+        }
 
-        boolean revokeToken = tokenService.revokeToken(testUuuid);
-        Assert.assertFalse(revokeToken);
+        try {
+            tokenService.revokeToken(testUuuid);
+        } catch (NoSuchTokenException e) {
+            Assert.assertNotNull(e);
+        }
 
         try {
             tokenService.verifyToken(null);
@@ -224,7 +234,10 @@ public class TokenServiceTestImpl implements TokenServiceTest {
         } catch (IllegalArgumentException e) {
             Assert.assertNotNull(e);
         }
-
+        Token token1 = new Token("test", null, null, null, null);
+        Assert.assertNull(token1.getCreationDate());
+        Assert.assertNull(token1.getExpirationDate());
+        Assert.assertNull(token1.getDateOfUse());
+        Assert.assertNull(token1.getRevocationDate());
     }
-
 }
