@@ -28,6 +28,7 @@ import javax.persistence.EntityManager;
 
 import org.everit.token.api.TokenService;
 import org.everit.token.api.dto.Token;
+import org.everit.token.api.exception.NoSuchTokenException;
 import org.everit.token.entity.TokenEntity;
 
 /**
@@ -83,6 +84,8 @@ public class TokenServiceImpl implements TokenService {
             if ((actualDate.getTime() > token.getExpirationDate().getTime()) && revokeToken(token.getTokenUuid())) {
                 token = getTokenEntity(uuid);
             }
+        } else {
+            throw new NoSuchTokenException();
         }
         return convertTokenEntityToToken(token);
     }
@@ -105,7 +108,10 @@ public class TokenServiceImpl implements TokenService {
         }
         boolean revoke = false;
         TokenEntity tokenEntity = getTokenEntity(uuid);
-        if ((tokenEntity != null) && (tokenEntity.getRevocationDate() == null)
+        if (tokenEntity == null) {
+            throw new NoSuchTokenException();
+        }
+        if ((tokenEntity.getRevocationDate() == null)
                 && (tokenEntity.getDateOfUse() == null)) {
             tokenEntity.setRevocationDate(new Date());
             em.merge(tokenEntity);
@@ -126,8 +132,11 @@ public class TokenServiceImpl implements TokenService {
         }
         boolean verify = false;
         TokenEntity tokenEntity = getTokenEntity(uuid);
+        if (tokenEntity == null) {
+            throw new NoSuchTokenException();
+        }
         Date actualDate = new Date();
-        if ((tokenEntity != null) && (actualDate.getTime() < tokenEntity.getExpirationDate().getTime())
+        if ((actualDate.getTime() < tokenEntity.getExpirationDate().getTime())
                 && (tokenEntity.getDateOfUse() == null) && (tokenEntity.getRevocationDate() == null)) {
             tokenEntity.setDateOfUse(actualDate);
             em.merge(tokenEntity);
