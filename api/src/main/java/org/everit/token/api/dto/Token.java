@@ -92,6 +92,11 @@ public final class Token {
         }
     }
 
+    /**
+     * Getting the creationDate member.
+     * 
+     * @return the creationDate member.
+     */
     public Date getCreationDate() {
         if (creationDate != null) {
             return (Date) creationDate.clone();
@@ -99,6 +104,11 @@ public final class Token {
         return null;
     }
 
+    /**
+     * Getting the dateOfUse member.
+     * 
+     * @return the dateOfUse member.
+     */
     public Date getDateOfUse() {
         if (dateOfUse != null) {
             return (Date) dateOfUse.clone();
@@ -106,6 +116,11 @@ public final class Token {
         return null;
     }
 
+    /**
+     * Getting the expirationDate member.
+     * 
+     * @return the expirationDate member.
+     */
     public Date getExpirationDate() {
         if (expirationDate != null) {
             return (Date) expirationDate.clone();
@@ -113,6 +128,11 @@ public final class Token {
         return null;
     }
 
+    /**
+     * Getting the revocationDate member.
+     * 
+     * @return the revocationDate member.
+     */
     public Date getRevocationDate() {
         if (revocationDate != null) {
             return (Date) revocationDate.clone();

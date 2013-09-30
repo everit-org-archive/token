@@ -39,7 +39,7 @@ public class NoSuchTokenException extends RuntimeException {
     }
 
     /**
-     * The simple constructor
+     * The simple constructor.
      * 
      * @param msg
      *            the error message.
@@ -63,8 +63,6 @@ public class NoSuchTokenException extends RuntimeException {
     /**
      * The simple constructor.
      * 
-     * @param msg
-     *            the error message.
      * @param e
      *            the {@link Throwable} object.
      */

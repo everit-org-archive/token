@@ -24,7 +24,6 @@ package org.everit.token.api;
 import java.util.Date;
 
 import org.everit.token.api.dto.Token;
-import org.everit.token.api.exception.NoSuchTokenException;
 
 /**
  * Service for managing the token function.
