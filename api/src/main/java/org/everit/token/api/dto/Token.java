@@ -70,26 +70,74 @@ public final class Token {
     public Token(final String uuid, final Date creationDate, final Date expirationDate, final Date revocationDate,
             final Date dateOfUse) {
         this.uuid = uuid;
-        this.creationDate = creationDate;
-        this.expirationDate = expirationDate;
-        this.revocationDate = revocationDate;
-        this.dateOfUse = dateOfUse;
+        if (creationDate != null) {
+            this.creationDate = (Date) creationDate.clone();
+        } else {
+            this.creationDate = creationDate;
+        }
+        if (expirationDate != null) {
+            this.expirationDate = (Date) expirationDate.clone();
+        } else {
+            this.expirationDate = expirationDate;
+        }
+        if (revocationDate != null) {
+            this.revocationDate = (Date) revocationDate.clone();
+        } else {
+            this.revocationDate = revocationDate;
+        }
+        if (dateOfUse != null) {
+            this.dateOfUse = (Date) dateOfUse.clone();
+        } else {
+            this.dateOfUse = dateOfUse;
+        }
     }
 
+    /**
+     * Getting the creationDate member.
+     * 
+     * @return the creationDate member.
+     */
     public Date getCreationDate() {
-        return creationDate;
+        if (creationDate != null) {
+            return (Date) creationDate.clone();
+        }
+        return null;
     }
 
+    /**
+     * Getting the dateOfUse member.
+     * 
+     * @return the dateOfUse member.
+     */
     public Date getDateOfUse() {
-        return dateOfUse;
+        if (dateOfUse != null) {
+            return (Date) dateOfUse.clone();
+        }
+        return null;
     }
 
+    /**
+     * Getting the expirationDate member.
+     * 
+     * @return the expirationDate member.
+     */
     public Date getExpirationDate() {
-        return expirationDate;
+        if (expirationDate != null) {
+            return (Date) expirationDate.clone();
+        }
+        return null;
     }
 
+    /**
+     * Getting the revocationDate member.
+     * 
+     * @return the revocationDate member.
+     */
     public Date getRevocationDate() {
-        return revocationDate;
+        if (revocationDate != null) {
+            return (Date) revocationDate.clone();
+        }
+        return null;
     }
 
     public String getUuid() {
