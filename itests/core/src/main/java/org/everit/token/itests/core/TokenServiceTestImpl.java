@@ -37,7 +37,11 @@ import org.everit.token.api.dto.Token;
  */
 public class TokenServiceTestImpl implements TokenServiceTest {
 
+    /**
+     * The basic iteration size.
+     */
     private static final int LENGTH = 100;
+
     /**
      * The {@link TokenService} instance.
      */
