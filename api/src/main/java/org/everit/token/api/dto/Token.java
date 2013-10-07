@@ -73,22 +73,22 @@ public final class Token {
         if (creationDate != null) {
             this.creationDate = (Date) creationDate.clone();
         } else {
-            this.creationDate = creationDate;
+            this.creationDate = null;
         }
         if (expirationDate != null) {
             this.expirationDate = (Date) expirationDate.clone();
         } else {
-            this.expirationDate = expirationDate;
+            this.expirationDate = null;
         }
         if (revocationDate != null) {
             this.revocationDate = (Date) revocationDate.clone();
         } else {
-            this.revocationDate = revocationDate;
+            this.revocationDate = null;
         }
         if (dateOfUse != null) {
             this.dateOfUse = (Date) dateOfUse.clone();
         } else {
-            this.dateOfUse = dateOfUse;
+            this.dateOfUse = null;
         }
     }
 

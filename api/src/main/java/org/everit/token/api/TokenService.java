@@ -37,17 +37,20 @@ public interface TokenService {
      *            the validity date of the token. Cannot be <code>null</code>.
      * @return the token UUID.
      * 
+     * @throws InvalidValidityDateException
+     *             if the current date is older than the validity end date.
      * @throws IllegalArgumentException
-     *             if the parameter is <code>null</code> or the validityEndDate is smaller than actual date.
+     *             if the parameter is <code>null</code>.
      */
     String createToken(final Date validityEndDate);
 
     /**
-     * Getting the token information.
+     * Get token information based on UUID.
      * 
      * @param uuid
      *            the token UUID. Cannot be <code>null</code>.
      * @return the {@link Token} object.
+     * 
      * @throws NoSuchTokenException
      *             if not exist token.
      * @throws IllegalArgumentException
@@ -61,6 +64,7 @@ public interface TokenService {
      * @param uuid
      *            the token UUID which withdrawn. Cannot be <code>null</code>.
      * @return <code>true</code> if revoke the token, otherwise <code>false</code>.
+     * 
      * @throws NoSuchTokenException
      *             if not exist token.
      * @throws IllegalArgumentException
@@ -74,6 +78,7 @@ public interface TokenService {
      * @param uuid
      *            the token UUID which verification. Cannot be <code>null</code>.
      * @return <code>true</code> if valid the token UUID otherwise <code>false</code>.
+     * 
      * @throws NoSuchTokenException
      *             if not exist token.
      * @throws IllegalArgumentException
