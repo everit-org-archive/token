@@ -210,33 +210,6 @@ public class TokenServiceTestImpl implements TokenServiceTest {
             j++;
         }
 
-        // j = 0;
-        // for (int i = LENGTH; i < (LENGTH + LENGTH); i++) {
-        // if (j == 0) {
-        // boolean verifyToken = tokenService.verifyToken(tokenUuids.get(i));
-        // Assert.assertTrue(verifyToken);
-        // Token token = tokenService.getToken(tokenUuids.get(i));
-        // Assert.assertNotNull(token);
-        // Assert.assertNotNull(token.getDateOfUse());
-        // boolean revokeToken = tokenService.revokeToken(tokenUuids.get(i));
-        // Assert.assertFalse(revokeToken);
-        // token = tokenService.getToken(tokenUuids.get(i));
-        // Assert.assertNotNull(token);
-        // Assert.assertTrue(token.getRevocationDate() == null);
-        // verifyToken = tokenService.verifyToken(tokenUuids.get(i));
-        // Assert.assertFalse(verifyToken);
-        // } else if (j == 1) {
-        // boolean revokeToken = tokenService.revokeToken(tokenUuids.get(i));
-        // Assert.assertTrue(revokeToken);
-        // revokeToken = tokenService.revokeToken(tokenUuids.get(i));
-        // Assert.assertFalse(revokeToken);
-        // boolean verifyToken = tokenService.verifyToken(tokenUuids.get(i));
-        // Assert.assertFalse(verifyToken);
-        // j = -1;
-        // }
-        // j++;
-        // }
-
         Token token = tokenService.getToken(tokenUuids.get(0));
         Assert.assertFalse(token == null);
 

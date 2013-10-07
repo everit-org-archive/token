@@ -32,7 +32,7 @@ public class NoSuchTokenException extends RuntimeException {
     private static final long serialVersionUID = -218737586479076916L;
 
     /**
-     * The default consturtor which contains the "Not exist the token in the database." error message.
+     * The default constructor which contains the "Not exist the token in the database." error message.
      */
     public NoSuchTokenException() {
         super("Not exist the token in the database.");
