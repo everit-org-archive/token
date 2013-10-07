@@ -28,6 +28,7 @@ import javax.persistence.EntityManager;
 
 import org.everit.token.api.TokenService;
 import org.everit.token.api.dto.Token;
+import org.everit.token.api.exception.InvalidValidityDateException;
 import org.everit.token.api.exception.NoSuchTokenException;
 import org.everit.token.entity.TokenEntity;
 
@@ -42,7 +43,7 @@ public class TokenServiceImpl implements TokenService {
     private EntityManager em;
 
     /**
-     * Convert token entity object to token object.
+     * Convert {@link TokenEntity} object to {@link Token} object.
      * 
      * @param tokenEntity
      *            the {@link TokenEntity} object.
@@ -60,11 +61,11 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public String createToken(final Date validityEndDate) {
         if (validityEndDate == null) {
-            throw new IllegalArgumentException("Cannot be null the parameters.");
+            throw new IllegalArgumentException("The validityEndDate parameter is null. Cannot be null.");
         }
         Date creationDate = new Date();
         if (creationDate.getTime() > validityEndDate.getTime()) {
-            throw new IllegalArgumentException("The creation date is older than validity end date.");
+            throw new InvalidValidityDateException();
         }
         UUID uuid = UUID.randomUUID();
         TokenEntity tokenEntity = new TokenEntity(uuid.toString(), creationDate, validityEndDate, null, null);
@@ -76,7 +77,7 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public Token getToken(final String uuid) {
         if (uuid == null) {
-            throw new IllegalArgumentException("Cannot be null the parameters.");
+            throw new IllegalArgumentException("The UUID parameter is null. Cannot be null.");
         }
         TokenEntity token = getTokenEntity(uuid);
         if (token != null) {
@@ -104,7 +105,7 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public boolean revokeToken(final String uuid) {
         if (uuid == null) {
-            throw new IllegalArgumentException("Cannot be null the parameters.");
+            throw new IllegalArgumentException("The UUID parameter is null. Cannot be null.");
         }
         boolean revoke = false;
         TokenEntity tokenEntity = getTokenEntity(uuid);
@@ -128,7 +129,7 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public boolean verifyToken(final String uuid) {
         if (uuid == null) {
-            throw new IllegalArgumentException("Cannot be null the parameters.");
+            throw new IllegalArgumentException("The UUID parameter is null. Cannot be null.");
         }
         boolean verify = false;
         TokenEntity tokenEntity = getTokenEntity(uuid);

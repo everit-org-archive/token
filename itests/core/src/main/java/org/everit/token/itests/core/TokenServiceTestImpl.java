@@ -31,6 +31,7 @@ import junit.framework.Assert;
 
 import org.everit.token.api.TokenService;
 import org.everit.token.api.dto.Token;
+import org.everit.token.api.exception.InvalidValidityDateException;
 import org.everit.token.api.exception.NoSuchTokenException;
 
 /**
@@ -47,6 +48,30 @@ public class TokenServiceTestImpl implements TokenServiceTest {
      * The {@link TokenService} instance.
      */
     private TokenService tokenService;
+
+    /**
+     * Creating tokens.
+     * 
+     * @return the token UUID list.
+     */
+    private List<String> createTokens() {
+        List<String> tokenUuids = new ArrayList<String>();
+        for (int i = 0; i < LENGTH; i++) {
+            Date actualDate = new Date();
+            Calendar validityEndDate = Calendar.getInstance();
+            validityEndDate.setTime(actualDate);
+            validityEndDate.add(Calendar.MILLISECOND, 100);
+            String expiriedToken = tokenService.createToken(validityEndDate.getTime());
+            Assert.assertFalse(expiriedToken == null);
+            tokenUuids.add(expiriedToken);
+        }
+        for (int i = LENGTH; i < (LENGTH + LENGTH); i++) {
+            String expiriedToken = tokenService.createToken(createValidityEndDate());
+            Assert.assertFalse(expiriedToken == null);
+            tokenUuids.add(expiriedToken);
+        }
+        return tokenUuids;
+    }
 
     /**
      * Create validity end date.
@@ -79,7 +104,7 @@ public class TokenServiceTestImpl implements TokenServiceTest {
             validityEndDate.setTime(actualDate);
             validityEndDate.add(Calendar.DATE, -1);
             tokenService.createToken(validityEndDate.getTime());
-        } catch (IllegalArgumentException e) {
+        } catch (InvalidValidityDateException e) {
             Assert.assertNotNull(e);
         }
 
@@ -150,57 +175,35 @@ public class TokenServiceTestImpl implements TokenServiceTest {
 
     @Override
     public void testTokens() {
-        List<String> tokenUuids = new ArrayList<String>();
-        for (int i = 0; i < LENGTH; i++) {
-            Date actualDate = new Date();
-            Calendar validityEndDate = Calendar.getInstance();
-            validityEndDate.setTime(actualDate);
-            validityEndDate.add(Calendar.MILLISECOND, 100);
-            String expiriedToken = tokenService.createToken(validityEndDate.getTime());
-            Assert.assertFalse(expiriedToken == null);
-            tokenUuids.add(expiriedToken);
-        }
-        for (int i = LENGTH; i < (LENGTH + LENGTH); i++) {
-            String expiriedToken = tokenService.createToken(createValidityEndDate());
-            Assert.assertFalse(expiriedToken == null);
-            tokenUuids.add(expiriedToken);
-        }
-
+        List<String> tokenUuids = createTokens();
         int j = 0;
         for (int i = 0; i < LENGTH; i++) {
             if (j == 0) {
                 Token token2 = tokenService.getToken(tokenUuids.get(i));
                 Assert.assertNotNull(token2);
                 Assert.assertNotNull(token2.getExpirationDate());
-            } else if (j == 1) {
-                boolean verifyToken = tokenService.verifyToken(tokenUuids.get(i));
-                Assert.assertFalse(verifyToken);
-                j = -1;
-            }
-            j++;
-        }
 
-        j = 0;
-        for (int i = LENGTH; i < (LENGTH + LENGTH); i++) {
-            if (j == 0) {
-                boolean verifyToken = tokenService.verifyToken(tokenUuids.get(i));
+                boolean verifyToken = tokenService.verifyToken(tokenUuids.get(i + LENGTH));
                 Assert.assertTrue(verifyToken);
-                Token token = tokenService.getToken(tokenUuids.get(i));
+                Token token = tokenService.getToken(tokenUuids.get(i + LENGTH));
                 Assert.assertNotNull(token);
                 Assert.assertNotNull(token.getDateOfUse());
-                boolean revokeToken = tokenService.revokeToken(tokenUuids.get(i));
+                boolean revokeToken = tokenService.revokeToken(tokenUuids.get(i + LENGTH));
                 Assert.assertFalse(revokeToken);
-                token = tokenService.getToken(tokenUuids.get(i));
+                token = tokenService.getToken(tokenUuids.get(i + LENGTH));
                 Assert.assertNotNull(token);
                 Assert.assertTrue(token.getRevocationDate() == null);
-                verifyToken = tokenService.verifyToken(tokenUuids.get(i));
+                verifyToken = tokenService.verifyToken(tokenUuids.get(i + LENGTH));
                 Assert.assertFalse(verifyToken);
             } else if (j == 1) {
-                boolean revokeToken = tokenService.revokeToken(tokenUuids.get(i));
-                Assert.assertTrue(revokeToken);
-                revokeToken = tokenService.revokeToken(tokenUuids.get(i));
-                Assert.assertFalse(revokeToken);
                 boolean verifyToken = tokenService.verifyToken(tokenUuids.get(i));
+                Assert.assertFalse(verifyToken);
+
+                boolean revokeToken = tokenService.revokeToken(tokenUuids.get(i + LENGTH));
+                Assert.assertTrue(revokeToken);
+                revokeToken = tokenService.revokeToken(tokenUuids.get(i + LENGTH));
+                Assert.assertFalse(revokeToken);
+                verifyToken = tokenService.verifyToken(tokenUuids.get(i + LENGTH));
                 Assert.assertFalse(verifyToken);
                 j = -1;
             }
