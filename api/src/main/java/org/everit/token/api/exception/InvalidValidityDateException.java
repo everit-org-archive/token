@@ -22,20 +22,19 @@ package org.everit.token.api.exception;
  */
 
 /**
- * NoSuchTokenException is throw when the token is invalid and not exist in the database.
+ * InvalidValidityDateException is throw when the creation date is older than the validity end date.
  */
-public class NoSuchTokenException extends RuntimeException {
+public class InvalidValidityDateException extends RuntimeException {
 
     /**
-     * The generated serialVersionUID.
+     * Generated serial version UUID.
      */
-    private static final long serialVersionUID = -218737586479076916L;
+    private static final long serialVersionUID = 303609644710110291L;
 
     /**
-     * The default constructor which contains the "Not exist the token in the database." error message.
+     * The default constructor which contains the "The current date is older than validity end date." error message.
      */
-    public NoSuchTokenException() {
-        super("Not exist the token in the database.");
+    public InvalidValidityDateException() {
+        super("The current date is older than validity end date.");
     }
-
 }
